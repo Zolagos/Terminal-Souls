@@ -1,4 +1,4 @@
-from funciones import *
+from funciones_3_4 import *
 
 HP_HEROE_INICIAL   = 100
 HP_CURACION_HEROE  = 20
