@@ -57,4 +57,3 @@ def generar_daño(min, max):
     daño = random.randint(min, max)
     return daño
 
-#def mostrar_estado(nombre_h, HP_HEROE_INICIAL, nombre_e, HP_ENEMIGO_INICIAL):
