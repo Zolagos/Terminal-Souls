@@ -14,7 +14,7 @@ def main():
     pociones = const.POCIONES_INICIALES
 
 
-    while not verificar_ganador(const.HP_HEROE_INICIAL, const.HP_ENEMIGO_INICIAL):
+    while not verificar_ganador(hp_heroe, hp_enemigo):
         
         mostrar_estado(nombre_heroe,hp_heroe,nombre_enemigo,hp_enemigo,pociones)
         
