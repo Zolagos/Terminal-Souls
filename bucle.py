@@ -1,25 +1,39 @@
+import constantes as const
 from funciones_3_4 import *
-
-HP_HEROE_INICIAL   = 100
-HP_CURACION_HEROE  = 20
-POCIONES_INICIALES = 3
-HP_ENEMIGO_INICIAL = 120
-"""
+from funciones import *
 
 
+def main():
+        
+    nombre_heroe = input("Name of the player:\n")
+    nombre_enemigo = input("Name of the enemy:\n")
 
-HP_CURACION_ENEMIGO = 25   # curación de la IA enemiga
-PROB_CRITICO       = 0.10  # 10 % de crítico
-UMBRAL_CURACION_IA = 0.20
-"""
+        
+    hp_heroe = const.HP_HEROE_INICIAL
+    hp_enemigo = const.HP_ENEMIGO_INICIAL
+    pociones = const.POCIONES_INICIALES
+
+
+    while not verificar_ganador(const.HP_HEROE_INICIAL, const.HP_ENEMIGO_INICIAL):
+        
+        mostrar_estado(nombre_heroe,hp_heroe,nombre_enemigo,hp_enemigo,pociones)
+        
+        hp_heroe, hp_enemigo, pociones = turno_jugador(hp_heroe,hp_enemigo,pociones)
+        
+        mostrar_estado(nombre_heroe,hp_heroe,nombre_enemigo,hp_enemigo,pociones)
+        
+        if hp_enemigo <= 0:
+            print("\n¡VICTORY! The enemy has fallen.")
+        else:
+            hp_heroe, hp_enemigo = turno_enemigo(hp_heroe,hp_enemigo)
+        
+        if hp_heroe <= 0:
+            print("\n¡YOU DIED!. \nGame Over.")
+            
 
 
 
-nombre_heroe = input("Nombre del jugador:\n")
-nombre_enemigo = input("Nombre del enemigo:\n")
-while not verificar_ganador(HP_HEROE_INICIAL, HP_ENEMIGO_INICIAL):
-
-    turno_jugador()
+main()
 
 
     

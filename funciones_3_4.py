@@ -1,50 +1,54 @@
 import random
-
-HP_HEROE_INICIAL   = 100
-HP_CURACION_HEROE  = 20
-POCIONES_INICIALES = 3
-HP_ENEMIGO_INICIAL = 120
-"""
+import constantes as const
+from funciones import generar_daño,aplicar_critico
 
 
-
-HP_CURACION_ENEMIGO = 25   # curación de la IA enemiga
-PROB_CRITICO       = 0.10  # 10 % de crítico
-UMBRAL_CURACION_IA = 0.20
-
-"""
-
-
-def turno_jugador():
-    accion = input("¿Que desea hacer?:\n 1.Atacar\n 2.Curar\n 3.Habilidad especial\n")
+def turno_jugador(hp_heroe,hp_enemigo,pociones):
+    accion = input("Write the action:\n 1.Attack\n 2.Heal\n 3.Special ability\n")
     accion = accion.lower().strip()
-    if accion == "atacar":
+    if accion == "attack":
         daño = generar_daño(10, 25)
-        HP_ENEMIGO_INICIAL -= daño
-        print(f"El heroe golpea por {daño} de daño")
-    elif accion == "curar":
-        if HP_CURACION_HEROE == 100:
-            print("No se puede curar, la vida esta completa")
-            turno_jugador()
+        hp_enemigo -= daño
+        print(f"¡The hero deals {daño} points of damage!")
+    elif accion == "heal":
+        if hp_heroe == 100:
+            print("Can't heal, the health is complete")
+            hp_heroe, hp_enemigo, pociones = turno_jugador(hp_heroe,hp_enemigo,pociones)
         else:
-            if POCIONES_INICIALES > 0:
-                HP_HEROE_INICIAL = HP_HEROE_INICIAL + HP_CURACION_HEROE
-                print()
+            if pociones > 0:
+                hp_heroe += const.HP_CURACION_HEROE
+                pociones -=1
+                print(f"¡The hero heals {const.HP_CURACION_HEROE}!")
+                if hp_heroe > 100:
+                    hp_heroe = 100  
             else:
-                print("No te puedes curar, no hay pociones disponibles")
-                turno_jugador() 
-    elif accion == "habilidad especial":
+                print("Can't heal, no potions left")
+                hp_heroe, hp_enemigo, pociones = turno_jugador(hp_heroe,hp_enemigo,pociones) 
+    elif accion == "Special ability":
         daño = generar_daño(30,50)
         if random.random() >= 0.5:
             daño = 0
-    
-    
+            print("¡The hero has used the special ability and failed!")
 
-                
+        print(f"¡The hero deals {daño} points of damage!")
+        hp_enemigo -= daño
+    else:
+        print("¡Invalid action!")
+        hp_heroe, hp_enemigo, pociones = turno_jugador(hp_heroe,hp_enemigo,pociones) 
+        
+    return hp_heroe,hp_enemigo,pociones
 
-def turno_enemigo():
-    daño = generar_daño(15, 20)
-    HP_HEROE_INICIAL -= daño
+    
+def turno_enemigo(hp_heroe,hp_enemigo):
+
+    if (hp_enemigo/const.HP_ENEMIGO_INICIAL) <= const.UMBRAL_CURACION_IA:
+        hp_enemigo += const.HP_CURACION_ENEMIGO
+        print(f"¡The enemy heals {const.HP_CURACION_ENEMIGO}!")
+    else:
+        daño = generar_daño(15, 20)
+        print(f"¡The enemy deals {daño} points of damage!")
+        hp_heroe -= daño
+    return hp_heroe, hp_enemigo
     
 
 def verificar_ganador(HP_HEROE_INICIAL, HP_ENEMIGO_INICIAL):
@@ -52,8 +56,4 @@ def verificar_ganador(HP_HEROE_INICIAL, HP_ENEMIGO_INICIAL):
         return True
     else:
         return False
-
-def generar_daño(min, max):
-    daño = random.randint(min, max)
-    return daño
 
