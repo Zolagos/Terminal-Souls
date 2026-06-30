@@ -24,7 +24,7 @@ def turno_jugador(hp_heroe,hp_enemigo,pociones):
             else:
                 print("Can't heal, no potions left")
                 hp_heroe, hp_enemigo, pociones = turno_jugador(hp_heroe,hp_enemigo,pociones) 
-    elif accion == "Special ability":
+    elif accion == "special ability":
         daño = generar_daño(30,50)
         if random.random() >= 0.5:
             daño = 0
